@@ -1,0 +1,38 @@
+###################################################
+## Node image with integrated Chromium instance. ##
+##      To run tests in headless browser.        ##
+###################################################
+
+## Defaults:
+## Node version: 14.17(LTS)
+## Alpine version: 3.13
+## Chromium version: 86.0.4240.111-r0
+## https://pkgs.alpinelinux.org/packages?name=chromium&branch=v3.13
+
+ARG node_image='node:14.17.0-alpine3.13'
+ARG http_proxy_string
+ARG https_proxy_string
+
+FROM $node_image AS base
+
+# proxy if you build behind the proxy
+ENV http_proxy $http_proxy_string
+ENV https_proxy $https_proxy_string
+
+# Installs latest Chromium package.
+RUN  \
+    apk upgrade --update-cache --available \
+    && apk add --no-cache chromium \
+        libstdc++ \
+        harfbuzz \
+        nss \
+        freetype \
+        ttf-dejavu \
+        ttf-freefont \
+    # cleanup
+    && apk del --purge \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/* /tmp/.[!.]*
+
+ENV CHROME_BIN=/usr/bin/chromium-browser \
+    CHROME_PATH=/usr/lib/chromium/
