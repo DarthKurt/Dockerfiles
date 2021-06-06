@@ -1,0 +1,40 @@
+##################################################
+## Node image with integrated Firefox instance. ##
+##      To run tests in headless browser.       ##
+##################################################
+
+## Defaults:
+## Node version: 14.17(LTS)
+## Alpine version: 3.13
+## Firefox version: 89.0-r0
+## https://pkgs.alpinelinux.org/packages?name=firefox&branch=v3.13
+
+ARG node_image='node:14.17.0-alpine3.13'
+ARG http_proxy_string
+ARG https_proxy_string
+
+FROM $node_image AS base
+
+# proxy if you build behind the proxy
+ENV http_proxy $http_proxy_string
+ENV https_proxy $https_proxy_string
+
+# install Firefox and dependencies
+RUN \
+    apk upgrade --update-cache --available \
+    && apk add --no-cache firefox \
+        desktop-file-utils \
+        adwaita-icon-theme \
+        ttf-dejavu \
+        ffmpeg-libs \
+    # cleanup
+    && apk del --purge \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/* /tmp/.[!.]* \
+    # allow node user to run firefox so tests should be run under node user
+    # node user inherited from node image
+    && chown -R node:node /usr/lib/firefox \
+    && chown -R node:node /usr/bin/firefox
+
+ENV http_proxy ''
+ENV https_proxy ''
