@@ -4,12 +4,12 @@
 ###################################################
 
 ## Defaults:
-## Node version: 14.17(LTS)
-## Alpine version: 3.13
-## Chromium version: 86.0.4240.111-r0
-## https://pkgs.alpinelinux.org/packages?name=chromium&branch=v3.13
+## Node version: 16.13(LTS)
+## Alpine version: 3.15
+## Chromium version: 93.0.4577.82-r2
+## https://pkgs.alpinelinux.org/packages?name=chromium&branch=v3.15
 
-ARG node_image='node:14.17.0-alpine3.13'
+ARG node_image='node:16.13-alpine3.15'
 
 FROM $node_image AS base
 
