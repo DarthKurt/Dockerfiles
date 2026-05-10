@@ -1,0 +1,4 @@
+images:
+  - name: ci-alpine
+    context: ./ci-alpine
+    version: "0.1.0"
