@@ -9,3 +9,14 @@ updates:
     labels:
       - "dependencies"
       - "docker"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: "chore"
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "CI"
